@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  db:
+    platform: linux/x86_64 #M1チップ対応のためプラットフォームを指定
+    image: mysql:5.7
+    ports:
+      - "4306:3306" #sequel pro用
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # MYSQL_USER: root
+      # MYSQL_PASSWORD: password
+      # MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      TZ: Asia/Tokyo
+    volumes:
+      - "./mysql/db-data/:/var/lib/mysql"
+      - "./mysql/my.cnf:/etc/mysql/conf.d/my.cnf" #データで日本語を使うために必要
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      TZ: Asia/Tokyo
+      RAILS_ENV: development
+    volumes:
+      - ./api:/high10_io
+      - ./api/vendor/bundle:/high10_io/vendor/bundle
+    stdin_open: true # -iオプションと同義
+    tty: true #　-tオプションと同義
+    depends_on:
+      - db
+
+  # frontend:
+  #   build:
+  #     context: ./frontend/
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./frontend:/frontend
+  #   command: sh -c "cd react-sample && yarn start"
+  #   ports:
+  #     - "3001:3000"
+  #   command: sh -c "yarn start"
+
+volumes:
+  mysql_data:
+    driver: local
