@@ -5,8 +5,8 @@ RUN apt-get update -qq && apt-get install -y \
   libpq-dev \
   nodejs
 
-RUN mkdir /high10_io
 ENV APP_ROOT /high10_io
+RUN mkdir ${APP_ROOT}
 WORKDIR ${APP_ROOT}
 ADD ./Gemfile ${APP_ROOT}/Gemfile
 ADD ./Gemfile.lock ${APP_ROOT}/Gemfile.lock
