@@ -5,7 +5,9 @@ RUN apt-get update -qq && apt-get install -y \
   libpq-dev \
   nodejs
 
-ENV APP_ROOT /high10_io
+ENV LANG=C.UTF-8
+ENV APP_ROOT="/high10_io"
+
 RUN mkdir ${APP_ROOT}
 WORKDIR ${APP_ROOT}
 ADD ./Gemfile ${APP_ROOT}/Gemfile
