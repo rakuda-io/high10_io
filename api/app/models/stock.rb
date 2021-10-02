@@ -1,4 +1,5 @@
 class Stock < ApplicationRecord
+  has_many :holdings
   validates :ticker_symbol, presence: true
 
   #finviz.comから最新の株データを取得するためのメソッド
