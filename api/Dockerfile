@@ -3,7 +3,8 @@ FROM ruby:2.7.1
 RUN apt-get update -qq && apt-get install -y \
   build-essential \
   libpq-dev \
-  nodejs
+  nodejs \
+  yarn
 
 ENV LANG=C.UTF-8
 ENV APP_ROOT="/high10_io"
