@@ -22,11 +22,10 @@ module Api
         current_div_rate = individual_page.search("td")[118].text.to_f
         holding.update(
           dividend_amount: current_div_amount,
-          dividend_rate: current_div_rate,
+          dividend_: current_div_rate,
           total_dividend_amount: current_div_amount * holding.quantity,
         )
       }
     end
-
   end
 end
