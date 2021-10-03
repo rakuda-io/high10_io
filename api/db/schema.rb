@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_03_172332) do
+ActiveRecord::Schema.define(version: 2021_10_03_190623) do
 
   create_table "holdings", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "stock_id", null: false
@@ -21,7 +21,9 @@ ActiveRecord::Schema.define(version: 2021_10_03_172332) do
     t.float "average_dividend_rate"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
     t.index ["stock_id"], name: "index_holdings_on_stock_id"
+    t.index ["user_id"], name: "index_holdings_on_user_id"
   end
 
   create_table "stocks", charset: "utf8mb4", force: :cascade do |t|
@@ -54,4 +56,5 @@ ActiveRecord::Schema.define(version: 2021_10_03_172332) do
   end
 
   add_foreign_key "holdings", "stocks"
+  add_foreign_key "holdings", "users"
 end
