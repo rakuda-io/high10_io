@@ -21,7 +21,6 @@
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
-/mysql
 .byebug_history
 ../mysql
 

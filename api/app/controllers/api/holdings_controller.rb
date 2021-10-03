@@ -6,10 +6,6 @@ module Api
     def index
       holdings = Holding.order(total_dividend_amount: :desc)
       render json: holdings
-      # user = User.find(params[:user_id])
-      # holdings = user.holdings
-
-      # render json: holdings
     end
 
     #今後、決まったタイミングでのみ更新に変更する為に一時的に切り出し
