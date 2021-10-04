@@ -1,6 +1,6 @@
 module AuthorizationSpecHelper
-  def sign_up(user)
-    post "/auth/sign_up",
+  def sign_in(user)
+    post "/api/auth/sign_in",
       params: { email: user[:email], password: user[:password] },
       as: :json
 
