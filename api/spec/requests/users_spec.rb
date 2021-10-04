@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe 'User Authorization', type: :request do
   let(:base_url) { 'http://localhost:3000/api/auth/' }
 
-  describe 'sign_up' do
+  describe 'Sign up Function' do
     before {post base_url, params: params }
 
     context '正常' do
       let(:user) { create(:user) }
-      let(:params) { { name: 'test', email: 'test@sample.com', password: 'password', password_confirmation: 'password' } }
+      let(:params) { { name: 'test_user', email: 'test@test.com', password: 'password', password_confirmation: 'password' } }
 
       it 'ユーザーが新規登録できていること' do
         expect(user).to be_present
@@ -19,7 +19,7 @@ RSpec.describe 'User Authorization', type: :request do
     end
 
     context '異常' do
-      let(:params) { { name: 'test', email: 'test@sample.com' } }
+      let(:params) { { name: 'test', email: 'test@test.com' } }
 
       it 'ユーザーが新規登録できていないこと' do
         expect(JSON.parse(response.body)['errors']['full_messages']).to eq(["Password can't be blank"])
@@ -30,7 +30,7 @@ RSpec.describe 'User Authorization', type: :request do
     end
   end
 
-  describe 'sign_in' do
+  describe 'Sign in Function' do
     before { post base_url + 'sign_in', params: params }
 
     context '正常' do
@@ -60,7 +60,7 @@ RSpec.describe 'User Authorization', type: :request do
     end
   end
 
-  describe 'sign_out' do
+  describe 'Sign out Function' do
     let!(:user) { create(:user) }
     let(:tokens) { sign_in(params) }
     let(:params) { { email: user[:email], password: 'password'} }
@@ -88,28 +88,64 @@ RSpec.describe 'User Authorization', type: :request do
     end
   end
 
-  describe 'edit user' do
+  describe 'Edit user Function' do
     let!(:user) { create(:user) }
     let(:tokens) { sign_in(params) }
     let(:params) { { email: user[:email], password: 'password'} }
-    let(:new_name) { { name: 'new_test' } }
+    let(:new_name) { { name: 'new_user' } }
+    let(:new_email) { { email: 'new@test.com' } }
     #sign_inしている状態を作る
     before { post base_url + 'sign_in', params: params }
 
     context '正常' do
-      it 'ユーザーの名前を変更できること' do
-        put base_url, params: new_name, headers: tokens
-        expect(JSON.parse(response.body)['data']['name']).to eq(new_name[:name])
+      context '名前の変更' do
+        it 'ユーザーの名前を変更できること' do
+          put base_url, params: new_name, headers: tokens
+          expect(JSON.parse(response.body)['data']['name']).to eq(new_name[:name])
+        end
+        it 'HTTPステータスが200であること' do
+          expect(response).to have_http_status(200)
+        end
       end
-      it 'ユーザーのメールアドレスを変更できること'
+
+      context 'メールアドレスの変更' do
+        it 'ユーザーのメールアドレスを変更できること' do
+          put base_url, params: new_email, headers: tokens
+          expect(JSON.parse(response.body)['data']['email']).to eq(new_email[:email])
+        end
+        it 'HTTPステータスが200であること' do
+          expect(response).to have_http_status(200)
+        end
+      end
     end
 
-    xcontext '異常' do
+    context '異常' do
+      context 'token情報がヘッダーに無い場合' do
+        before { put base_url, params: new_name, headers: nil }
 
+        it 'ユーザーの名前を変更できないこと' do
+          expect(JSON.parse(response.body)['errors']).to eq(["User not found."])
+        end
+        it 'HTTPステータスが404である(ページが見つからない)こと' do
+          put base_url, params: new_name, headers: nil
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context '適切なリクエスト更新データがリクエストに無い場合' do
+        before { put base_url, headers: tokens }
+
+        it 'ユーザーの名前を変更できないこと' do
+          expect(JSON.parse(response.body)['errors']).to eq(["Please submit proper account update data in request body."])
+        end
+        it 'HTTPステータスが422である(処理ができない)こと' do
+          expect(response).to have_http_status(422)
+        end
+      end
     end
   end
 
-  xdescribe 'change password' do
+  xdescribe 'Change password Function' do
     context '正常' do
 
     end
