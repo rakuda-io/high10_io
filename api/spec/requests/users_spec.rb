@@ -93,13 +93,13 @@ RSpec.describe 'User Authorization', type: :request do
     let(:tokens) { sign_in(params) }
     let(:params) { { email: user[:email], password: 'password'} }
     let(:new_name) { { name: 'new_test' } }
+    #sign_inしている状態を作る
     before { post base_url + 'sign_in', params: params }
 
     context '正常' do
       it 'ユーザーの名前を変更できること' do
-
         put base_url, params: new_name, headers: tokens
-        expect(JSON.parse(response.body)).to eq('lk')
+        expect(JSON.parse(response.body)['data']['name']).to eq(new_name[:name])
       end
       it 'ユーザーのメールアドレスを変更できること'
     end

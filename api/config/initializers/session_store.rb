@@ -1,0 +1,1 @@
+Rails.application.config.session_store :active_record_store, key: '_high10_io_session', :expire_after => 24.hour
