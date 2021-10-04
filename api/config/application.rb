@@ -29,6 +29,8 @@ module High10Io
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     config.middleware.use ActionDispatch::Flash
+
+    #devise_token_authの設定
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
@@ -62,5 +64,6 @@ module High10Io
                        request_specs: true
       g.fixture_replacement :factory_bot, dir: "spec/factories"
     end
+
   end
 end
