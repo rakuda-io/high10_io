@@ -86,8 +86,36 @@ RSpec.describe 'User Authorization', type: :request do
         expect(response).to have_http_status(404)
       end
     end
+  end
 
+  describe 'edit user' do
+    let!(:user) { create(:user) }
+    let(:tokens) { sign_in(params) }
+    let(:params) { { email: user[:email], password: 'password'} }
+    let(:new_name) { { name: 'new_test' } }
+    before { post base_url + 'sign_in', params: params }
 
+    context '正常' do
+      it 'ユーザーの名前を変更できること' do
 
+        put base_url, params: new_name, headers: tokens
+        expect(JSON.parse(response.body)).to eq('lk')
+      end
+      it 'ユーザーのメールアドレスを変更できること'
+    end
+
+    xcontext '異常' do
+
+    end
+  end
+
+  xdescribe 'change password' do
+    context '正常' do
+
+    end
+
+    context '異常' do
+
+    end
   end
 end
