@@ -22,7 +22,6 @@
 /storage/*
 !/storage/.keep
 .byebug_history
-../mysql/db-data
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
