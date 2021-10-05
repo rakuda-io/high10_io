@@ -24,11 +24,14 @@ module High10Io
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
+    #devise_token_authの設定(クッキーオーバーフローのエラー関連で一旦コメントアウト)
+    #session_storeからactive_recored_storeに変更（gem activerecord-session_store）
+    # config.session_store :active_record_store, key: '_interslice_session'
+    # config.middleware.use ActionDispatch::Cookies # Required for all session management
+    # config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+    # config.middleware.use ActionDispatch::Flash
+
     #devise_token_authの設定
-    config.session_store :cookie_store, key: '_interslice_session'
-    config.middleware.use ActionDispatch::Cookies # Required for all session management
-    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
-    config.middleware.use ActionDispatch::Flash
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
@@ -50,5 +53,18 @@ module High10Io
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    #factory_botの設定
+    config.generators do |g|
+      g.test_framework :rspec,
+                       fixtures: false,
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false,
+                       controller_specs: false,
+                       request_specs: true
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
+    end
+
   end
 end

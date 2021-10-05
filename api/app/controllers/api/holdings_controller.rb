@@ -1,15 +1,16 @@
 module Api
   class HoldingsController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_api_user!
 
     #最終的に毎回スクレイピングしなくていいようにリファクタリング予定
     def index
-      holdings = Holding.order(total_dividend_amount: :desc)
+      user = User.find(params[:user_id])
+      holdings = user.holdings.order(total_dividend_amount: :desc)
       render json: holdings
-      # user = User.find(params[:user_id])
-      # holdings = user.holdings
+    end
 
-      # render json: holdings
+    def show
+
     end
 
     #今後、決まったタイミングでのみ更新に変更する為に一時的に切り出し
