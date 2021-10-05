@@ -10,18 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_04_181209) do
+ActiveRecord::Schema.define(version: 2021_10_05_092956) do
 
   create_table "holdings", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "stock_id", null: false
+    t.bigint "user_id", null: false
     t.float "quantity"
     t.float "dividend_amount"
     t.float "dividend_rate"
     t.float "total_dividend_amount"
-    t.float "average_dividend_rate"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id"
     t.index ["stock_id"], name: "index_holdings_on_stock_id"
     t.index ["user_id"], name: "index_holdings_on_user_id"
   end
