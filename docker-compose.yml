@@ -7,9 +7,6 @@ services:
       - "4306:3306" #sequel pro用
     environment:
       MYSQL_ROOT_PASSWORD: root
-      # MYSQL_USER: root
-      # MYSQL_PASSWORD: password
-      # MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       TZ: Asia/Tokyo
     volumes:
       - "./mysql/db-data/:/var/lib/mysql"
